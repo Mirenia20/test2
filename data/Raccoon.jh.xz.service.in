@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=Raccoon.jh.xz
+Exec=@bindir@/racoon --gapplication-service

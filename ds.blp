@@ -1,0 +1,38 @@
+
+Adw.ActionRow {
+  [prefix]
+  Gtk.Box box_row_hist {
+    orientation: horizontal;
+
+    Gtk.Box {
+      orientation: horizontal;
+
+      Gtk.Box title_box {
+        orientation: vertical;
+
+        Gtk.Label {
+          label: "Title1";
+
+          styles [
+            "title",
+          ]
+        }
+
+        Gtk.Label {
+          label: "Subtitle1";
+
+          styles [
+            "subtitle",
+          ]
+        }
+      }
+    }
+  }
+
+  [suffix]
+  Gtk.Box {
+    Gtk.Image {
+      icon-name: "go-next-symbolic";
+    }
+  }
+}

@@ -1,0 +1,27 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $RaccoonPathRow :Gtk.Box{
+
+                   margin-bottom: 12;
+              [prefix]
+           Gtk.Box{
+             Gtk.Image icon_status{
+
+             }
+
+              Gtk.Entry path_entry{
+                hexpand: true;
+              }
+          }
+              [suffix]
+              Gtk.Button clear_button {
+                icon-name: "window-close-symbolic";
+
+                styles [
+                  "flat",
+                ]
+                margin-start: 10;
+              }
+
+            }

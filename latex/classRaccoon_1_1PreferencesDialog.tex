@@ -1,0 +1,130 @@
+\doxysection{Raccoon\+::Preferences\+Dialog Class Reference}
+\hypertarget{classRaccoon_1_1PreferencesDialog}{}\label{classRaccoon_1_1PreferencesDialog}\index{Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}}
+
+
+Inheritance diagram for Raccoon\+::Preferences\+Dialog\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{classRaccoon_1_1PreferencesDialog__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Raccoon\+::Preferences\+Dialog\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{classRaccoon_1_1PreferencesDialog__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classRaccoon_1_1PreferencesDialog_ab76b016930b3d5569e5f6cb2634aee42}{Preferences\+Dialog}} (\mbox{\hyperlink{classRaccoon_1_1Window}{Raccoon.\+Window}} parent)
+\item 
+\mbox{\hyperlink{classRaccoon_1_1PreferencesDialog_a4974a601ed9435d611426894c15e4d0d}{foreach}} (var icon\+\_\+name in \mbox{\hyperlink{classRaccoon_1_1PreferencesDialog_aab4935e8f14992b7c2d6cff9f84d98e4}{icons}})
+\item 
+\mbox{\hyperlink{classRaccoon_1_1PreferencesDialog_a6e9a687dee67983422d4faff07b65a5c}{foreach}} (var uri in settings\+\_\+pref.\+get\+\_\+strv("{}uris"{}))
+\item 
+add\+\_\+path\+\_\+button clicked \mbox{\hyperlink{classRaccoon_1_1PreferencesDialog_ae9ca8257e3e9869898f2ca21d5f40fec}{connect}} (()=$>$\{ add\+\_\+new\+\_\+path();\})
+\item 
+async GLib File \mbox{\hyperlink{classRaccoon_1_1PreferencesDialog_a8164eeabb0417a6b378603c1a99629c8}{open\+\_\+dir}} (Gtk.\+Window parent\+\_\+window)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classRaccoon_1_1PreferencesDialog_ad68b61f7ceae7bb59d8dc6370f6d9cc4}{construct}}
+\item 
+var \mbox{\hyperlink{classRaccoon_1_1PreferencesDialog_ad2eaf2fb90910a7127ab292fb84cf968}{theme}} = Gtk.\+Icon\+Theme.\+get\+\_\+for\+\_\+display(Gdk.\+Display.\+get\+\_\+default())
+\item 
+string\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classRaccoon_1_1PreferencesDialog_aab4935e8f14992b7c2d6cff9f84d98e4}{icons}} = theme.\+get\+\_\+icon\+\_\+names ()
+\item 
+\mbox{\hyperlink{classRaccoon_1_1PreferencesDialog_a00598ff3ed9c2a0c6a3804e88aa92c83}{settings\+\_\+pref}} = new GLib.\+Settings("{}Raccoon.\+jh.\+xz"{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classRaccoon_1_1PreferencesDialog_ab76b016930b3d5569e5f6cb2634aee42}\index{Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}!PreferencesDialog@{PreferencesDialog}}
+\index{PreferencesDialog@{PreferencesDialog}!Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}}
+\doxysubsubsection{\texorpdfstring{PreferencesDialog()}{PreferencesDialog()}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1PreferencesDialog_ab76b016930b3d5569e5f6cb2634aee42} 
+Raccoon\+::\+Preferences\+Dialog\+::\+Preferences\+Dialog (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classRaccoon_1_1Window}{Raccoon.\+Window}}}]{parent}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classRaccoon_1_1PreferencesDialog_ae9ca8257e3e9869898f2ca21d5f40fec}\index{Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}!connect@{connect}}
+\index{connect@{connect}!Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}}
+\doxysubsubsection{\texorpdfstring{connect()}{connect()}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1PreferencesDialog_ae9ca8257e3e9869898f2ca21d5f40fec} 
+add\+\_\+path\+\_\+button clicked Raccoon\+::\+Preferences\+Dialog\+::connect (\begin{DoxyParamCaption}\item[{()}]{}{, }\item[{\{ add\+\_\+new\+\_\+path();\}}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRaccoon_1_1PreferencesDialog_a4974a601ed9435d611426894c15e4d0d}\index{Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}!foreach@{foreach}}
+\index{foreach@{foreach}!Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}}
+\doxysubsubsection{\texorpdfstring{foreach()}{foreach()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1PreferencesDialog_a4974a601ed9435d611426894c15e4d0d} 
+Raccoon\+::\+Preferences\+Dialog\+::foreach (\begin{DoxyParamCaption}\item[{var icon\+\_\+name in}]{icons}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classRaccoon_1_1PreferencesDialog_a6e9a687dee67983422d4faff07b65a5c}\index{Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}!foreach@{foreach}}
+\index{foreach@{foreach}!Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}}
+\doxysubsubsection{\texorpdfstring{foreach()}{foreach()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1PreferencesDialog_a6e9a687dee67983422d4faff07b65a5c} 
+Raccoon\+::\+Preferences\+Dialog\+::foreach (\begin{DoxyParamCaption}\item[{var uri in settings\+\_\+pref.}]{get\+\_\+strv}{"{}uris"{}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classRaccoon_1_1PreferencesDialog_a6e9a687dee67983422d4faff07b65a5c_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classRaccoon_1_1PreferencesDialog_a8164eeabb0417a6b378603c1a99629c8}\index{Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}!open\_dir@{open\_dir}}
+\index{open\_dir@{open\_dir}!Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}}
+\doxysubsubsection{\texorpdfstring{open\_dir()}{open\_dir()}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1PreferencesDialog_a8164eeabb0417a6b378603c1a99629c8} 
+async GLib File Raccoon\+::\+Preferences\+Dialog\+::open\+\_\+dir (\begin{DoxyParamCaption}\item[{Gtk.\+Window}]{parent\+\_\+window}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classRaccoon_1_1PreferencesDialog_ad68b61f7ceae7bb59d8dc6370f6d9cc4}\index{Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}!construct@{construct}}
+\index{construct@{construct}!Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}}
+\doxysubsubsection{\texorpdfstring{construct}{construct}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1PreferencesDialog_ad68b61f7ceae7bb59d8dc6370f6d9cc4} 
+Raccoon\+::\+Preferences\+Dialog\+::construct}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ var\ display\ =\ Gdk.Display.get\_default\ ()}
+
+\end{DoxyCode}
+\Hypertarget{classRaccoon_1_1PreferencesDialog_aab4935e8f14992b7c2d6cff9f84d98e4}\index{Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}!icons@{icons}}
+\index{icons@{icons}!Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}}
+\doxysubsubsection{\texorpdfstring{icons}{icons}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1PreferencesDialog_aab4935e8f14992b7c2d6cff9f84d98e4} 
+string \mbox{[}$\,$\mbox{]} Raccoon\+::\+Preferences\+Dialog\+::icons = theme.\+get\+\_\+icon\+\_\+names ()}
+
+\Hypertarget{classRaccoon_1_1PreferencesDialog_a00598ff3ed9c2a0c6a3804e88aa92c83}\index{Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}!settings\_pref@{settings\_pref}}
+\index{settings\_pref@{settings\_pref}!Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}}
+\doxysubsubsection{\texorpdfstring{settings\_pref}{settings\_pref}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1PreferencesDialog_a00598ff3ed9c2a0c6a3804e88aa92c83} 
+Raccoon\+::\+Preferences\+Dialog\+::settings\+\_\+pref = new GLib.\+Settings("{}Raccoon.\+jh.\+xz"{})}
+
+\Hypertarget{classRaccoon_1_1PreferencesDialog_ad2eaf2fb90910a7127ab292fb84cf968}\index{Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}!theme@{theme}}
+\index{theme@{theme}!Raccoon::PreferencesDialog@{Raccoon::PreferencesDialog}}
+\doxysubsubsection{\texorpdfstring{theme}{theme}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1PreferencesDialog_ad2eaf2fb90910a7127ab292fb84cf968} 
+var Raccoon\+::\+Preferences\+Dialog\+::theme = Gtk.\+Icon\+Theme.\+get\+\_\+for\+\_\+display(Gdk.\+Display.\+get\+\_\+default())}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{preferences__dialog_8vala}{preferences\+\_\+dialog.\+vala}}\end{DoxyCompactItemize}

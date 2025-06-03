@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=racoon
+Exec=racoon
+Icon=Raccoon.jh.xz
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true

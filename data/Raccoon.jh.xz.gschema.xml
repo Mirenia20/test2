@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="racoon">
+    <schema id="Raccoon.jh.xz" path="/Raccoon/jh/xz/">
+        <key name="uris" type="as">
+            <default>[]</default>
+            <summary>Excluded locations URIs</summary>
+            <description>A list of URIs for locations to be excluded from scanning.</description>
+        </key>
+
+        <key name="last-cleanup" type="s">
+            <default>""</default>
+            <summary>Timestamp of the last cleaning operation</summary>
+            <description>Stores the timestamp of the last cleanup run.</description>
+        </key> 
+    </schema>
+</schemalist>

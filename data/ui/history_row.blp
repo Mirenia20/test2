@@ -1,0 +1,44 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $RaccoonHistoryRow : Adw.ActionRow {
+    [prefix]
+    Gtk.Box s{
+    orientation: horizontal;
+
+        Box {
+            orientation: horizontal;
+
+            Box {
+                orientation: vertical;
+                margin-bottom: 5;
+                valign: center;
+
+
+                Label date_label{
+                    css-classes: [ "title" ];
+                }
+
+                Label path_label{
+                    css-classes: [ "subtitle" ];
+                 } 
+            }
+
+            Label size_label {
+                hexpand: true;
+                css-classes: [ "size_label" ];
+                margin-start: 35;
+            }
+        }
+    }
+
+    [suffix]
+    Gtk.Box {
+        orientation: horizontal;
+
+        Image {
+            icon-name: "go-next-symbolic";
+        }
+    }
+
+}

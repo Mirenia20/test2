@@ -1,0 +1,112 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $RaccoonAnalysisPage: Adw.NavigationPage {
+
+
+  Adw.ToolbarView {
+    [bottom]
+    Adw.HeaderBar  bottom_headbar{
+      show-back-button: false;
+      show-end-title-buttons: false;
+
+      title-widget: Adw.WindowTitle  total_size{
+      };
+
+      [start]
+      Box {
+        Button prev_button {
+          icon-name: "go-previous-symbolic";
+          sensitive: false;
+        }
+
+        Button next_button {
+          icon-name: "go-next-symbolic";
+          sensitive: false;
+        }
+      }
+     
+     [end]
+      Button clean_button {
+        Adw.ButtonContent {
+          label: _("Clean");
+          icon-name: "empty-trash-bin-symbolic";
+        }
+
+        styles [
+          "destructive-action",
+          "c",
+        ]
+      }
+    }
+
+    [top]
+    Adw.HeaderBar top_headbar {
+      show-end-title-buttons: false;
+      show-back-button: true;
+
+      title-widget: Adw.WindowTitle {
+        title: "~";
+      };
+     
+     [start]
+     Button select_all_button{
+          label: _("Select All");
+           visible: false; 
+      }
+
+
+
+      [end]
+      Button selection_button {
+        icon-name: "selection-mode-symbolic";
+        tooltip-text: _("Select items");
+      }
+
+
+
+      [end]
+      Button cancel_button{
+          label: _("Cancel");
+          tooltip-text: _("Select items");
+          visible: false; 
+      }
+
+     [end]
+      Button search_button{
+        icon-name: "edit-find-symbolic";
+      }
+
+
+
+    }
+   
+content: Gtk.Box container{
+        orientation: vertical;
+   SearchBar searchbar {
+        key-capture-widget: container;
+
+        SearchEntry searchentry {
+          search-delay: 100;
+          placeholder-text: _("Search files");
+          width-request: 400;
+        }
+      }
+     
+
+      ScrolledWindow {
+      max-content-height: 800;
+      min-content-height: 400;
+      min-content-width: 200;
+
+      Box {
+        orientation: vertical;
+
+        ListView list_view {
+          factory: SignalListItemFactory item_factory {};
+        }
+      }
+      }
+    };
+  }
+}

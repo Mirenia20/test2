@@ -1,0 +1,94 @@
+\doxysection{Raccoon\+::Application Class Reference}
+\hypertarget{classRaccoon_1_1Application}{}\label{classRaccoon_1_1Application}\index{Raccoon::Application@{Raccoon::Application}}
+
+
+Inheritance diagram for Raccoon\+::Application\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=198pt]{classRaccoon_1_1Application__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Raccoon\+::Application\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=198pt]{classRaccoon_1_1Application__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classRaccoon_1_1Application_a884317666938ed63456a3fe3e5fd906f}{Application}} ()
+\item 
+this \mbox{\hyperlink{classRaccoon_1_1Application_ace35086b0e841783f17b13cc61275e33}{add\+\_\+action\+\_\+entries}} (action\+\_\+entries, this)
+\item 
+this \mbox{\hyperlink{classRaccoon_1_1Application_a47a70f7c6f8e039fcd7224c63701241c}{set\+\_\+accels\+\_\+for\+\_\+action}} ("{}app.\+quit"{}, \{"{}$<$primary$>$q"{}\})
+\item 
+override void \mbox{\hyperlink{classRaccoon_1_1Application_abbc30f66eec5f2ad3938521df0903b94}{activate}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classRaccoon_1_1Application_a0301354f87ea50b90c3a0f634f2a30eb}{construct}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classRaccoon_1_1Application_a884317666938ed63456a3fe3e5fd906f}\index{Raccoon::Application@{Raccoon::Application}!Application@{Application}}
+\index{Application@{Application}!Raccoon::Application@{Raccoon::Application}}
+\doxysubsubsection{\texorpdfstring{Application()}{Application()}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1Application_a884317666938ed63456a3fe3e5fd906f} 
+Raccoon\+::\+Application\+::\+Application (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classRaccoon_1_1Application_abbc30f66eec5f2ad3938521df0903b94}\index{Raccoon::Application@{Raccoon::Application}!activate@{activate}}
+\index{activate@{activate}!Raccoon::Application@{Raccoon::Application}}
+\doxysubsubsection{\texorpdfstring{activate()}{activate()}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1Application_abbc30f66eec5f2ad3938521df0903b94} 
+override void Raccoon\+::\+Application\+::activate (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classRaccoon_1_1Application_ace35086b0e841783f17b13cc61275e33}\index{Raccoon::Application@{Raccoon::Application}!add\_action\_entries@{add\_action\_entries}}
+\index{add\_action\_entries@{add\_action\_entries}!Raccoon::Application@{Raccoon::Application}}
+\doxysubsubsection{\texorpdfstring{add\_action\_entries()}{add\_action\_entries()}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1Application_ace35086b0e841783f17b13cc61275e33} 
+this Raccoon\+::\+Application\+::add\+\_\+action\+\_\+entries (\begin{DoxyParamCaption}\item[{action\+\_\+entries}]{}{, }\item[{this}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRaccoon_1_1Application_a47a70f7c6f8e039fcd7224c63701241c}\index{Raccoon::Application@{Raccoon::Application}!set\_accels\_for\_action@{set\_accels\_for\_action}}
+\index{set\_accels\_for\_action@{set\_accels\_for\_action}!Raccoon::Application@{Raccoon::Application}}
+\doxysubsubsection{\texorpdfstring{set\_accels\_for\_action()}{set\_accels\_for\_action()}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1Application_a47a70f7c6f8e039fcd7224c63701241c} 
+this Raccoon\+::\+Application\+::set\+\_\+accels\+\_\+for\+\_\+action (\begin{DoxyParamCaption}\item[{"{}app.\+quit"{}}]{}{, }\item[{\{"{}$<$primary$>$q"{}\}}]{}{}\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classRaccoon_1_1Application_a0301354f87ea50b90c3a0f634f2a30eb}\index{Raccoon::Application@{Raccoon::Application}!construct@{construct}}
+\index{construct@{construct}!Raccoon::Application@{Raccoon::Application}}
+\doxysubsubsection{\texorpdfstring{construct}{construct}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1Application_a0301354f87ea50b90c3a0f634f2a30eb} 
+Raccoon\+::\+Application\+::construct}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \ ActionEntry[]\ action\_entries\ =\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}about"{}},\ this.on\_about\_action\ \},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}preferences"{}},\ this.on\_preferences\_action\ \},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}quit"{}},\ this.quit\ \}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{application_8vala}{application.\+vala}}\end{DoxyCompactItemize}

@@ -1,0 +1,8 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/Raccoon.jh.xz.desktop.in
+data/Raccoon.jh.xz.metainfo.xml.in
+data/Raccoon.jh.xz.gschema.xml
+src/main.vala
+src/window.vala
+src/window.blp

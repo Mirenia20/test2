@@ -1,0 +1,89 @@
+using Gtk 4.0;
+using Adw 1;
+
+
+template $RaccoonPreferencesDialog : Adw.PreferencesDialog  {
+
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+
+
+
+
+    }//headerbar
+  Adw.Clamp {
+
+    ScrolledWindow scrolled_window {
+       propagate-natural-height: true;
+        max-content-height: 500;
+        margin-start : 10;
+        margin-end:10; 
+
+        margin-top: 10;
+    Gtk.Box {
+      orientation: vertical;
+      // title: _("_General");
+      // use-underline: true;
+      // icon-name: "emblem-system-symbolic";
+      Adw.PreferencesGroup {
+        title: _("Sheduled Cleans");
+        description: _("Set your own schedule cleaning (e.g., everyday, everyweeks)");
+
+        /*[header-suffix]
+        Gtk.Image sheldule_clean{
+          icon-name:"org.gnome.Calendar.Devel-symbolic";
+        }*/
+
+      Adw.ComboRow drop_down {
+          title: _("Frequency ");
+       //  subtitle: _("List of options from a drop down");
+          //enable-search: true;
+
+          model: StringList list {
+            strings [
+              "Never",
+              "Hourly",
+              "Daily",
+              "Weekly",
+              "Yearly",
+            ]
+          };
+        }
+        margin-bottom: 20;
+      }
+
+      Adw.PreferencesGroup {
+        title: _("Paths Directiries");
+        description: _("e.g. /home/user/.cache/");
+        [header-suffix]
+        Gtk.Button add_path_button{
+                icon-name: "list-add-symbolic";
+                valign: center;
+                halign: center;
+
+                styles [
+                  "flat",
+                ]
+        }//add_path_button
+      }  //PreferencesGroup
+      //  margin-bottom: 24;
+        //margin-top: 24;
+      //  has-frame: true;
+     
+          Gtk.Box enty_dirs_box {
+            orientation: vertical;
+
+
+
+
+
+
+          }
+          }
+        }
+      }
+    }
+}
+

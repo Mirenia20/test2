@@ -1,0 +1,137 @@
+using Gtk 4.0;
+using Adw 1;
+//using w_burger_menu;
+
+template $RaccoonMainPage: Adw.NavigationPage {
+
+
+tag:"main";
+
+
+
+    Adw.ToolbarView {
+      [top]
+        Adw.HeaderBar {
+          show-end-title-buttons: false;
+          show-back-button:true;
+          title-widget: Adw.WindowTitle {
+            title:"Raccoon";
+          };
+
+     [start]
+      Button history_button {
+        icon-name: "history-undo-symbolic";
+      }
+
+     [end]
+      MenuButton {
+        icon-name: "open-menu-symbolic";
+        tooltip-text: _("Main Menu");
+        primary: true;
+         menu-model: window_menu;
+      }
+         }//headerbar
+
+
+      //template $RaccoonMainPage: Gtk.Box {
+content:Gtk.Box welcome {
+orientation: vertical;
+vexpand:true;
+
+Box {
+    orientation: vertical;
+    valign: center;
+    halign: center;
+
+        Gtk.Image icon_fill {
+          icon-name: "user-trash-full-symbolic";
+          pixel-size: 196;
+          margin-bottom: 30;
+          styles [
+            "icon-dropshadow",
+          ]
+        }//icon_fill
+
+
+        Box hint_box{
+          margin-top: 10;
+          margin-bottom: 10;
+          orientation: vertical;
+
+             Label hint_label1{
+                label: _("No scan paths found.");
+                 styles [
+                   "dim-label"
+                 ]                          
+            }
+
+             Label hint_label2{
+               label: _("Please add at least one path in Preferences");
+             styles [
+               "dim-label"
+             ]                          
+          }
+        }
+
+//"title-1",
+Box subtitle {
+orientation: vertical;
+vexpand: true;
+halign: center;
+        margin-bottom: 30;
+        Gtk.Button analysis_button{
+          Adw.ButtonContent {
+label: _("Analysis");
+       icon-name: "edit-find-symbolic";
+          }
+          margin-top:6;
+
+          styles [
+            "suggested-action",
+          ]
+        }//analysis_button
+}//subtitle
+}
+Label last_cleanup{
+  styles [
+    "dim-label"
+  ] 
+
+  margin-bottom:20;
+
+}
+
+
+
+
+
+};//welcome
+
+}//toolbarview
+
+}
+
+
+
+
+
+
+menu window_menu {
+  section {
+    item {
+label: _("_Preferences");
+action: "app.preferences";
+    }
+
+    item {
+label: _("_Keyboard Shortcuts");
+action: "win.show-help-overlay";
+    }
+
+    item {
+label: _("_About Raccoon");
+action: "app.about";
+    }
+
+  }//section
+}//windowmenu

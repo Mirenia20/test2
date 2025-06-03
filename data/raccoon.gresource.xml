@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/Raccoon/jh/xz/data">
+    <file preprocess="xml-stripblanks">ui/window.ui</file>
+    <file preprocess="xml-stripblanks">ui/preferences_dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/path_row.ui</file>
+    <file preprocess="xml-stripblanks">ui/history_dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/gtk/help-overlay.ui</file>
+    <file preprocess="xml-stripblanks">ui/history_row.ui</file>
+    <file preprocess="xml-stripblanks">ui/main_page.ui</file>
+    <file preprocess="xml-stripblanks">ui/analysis_page.ui</file>
+    <file>style.css</file>
+  </gresource>
+
+
+  <gresource prefix="/Raccoon/jh/xz/icons/scalable/actions">
+    <file alias="history-undo-symbolic.svg">icons/hicolor/scalable/actions/history-undo-symbolic.svg</file>
+
+  <file alias="empty-trash-bin-symbolic.svg" preprocess="xml-stripblanks">icons/hicolor/scalable/actions/empty-trash-bin-symbolic.svg</file>
+
+  </gresource>
+</gresources>

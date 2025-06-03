@@ -1,0 +1,61 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $RaccoonHistoryDialog : Adw.Dialog {
+
+
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+
+      [start]
+      Button clear_all {
+        Adw.ButtonContent {
+          label: _("Clear");
+          icon-name: "user-trash-symbolic";
+        }
+      }
+
+      title-widget: Adw.WindowTitle {
+        title: _("History");
+        subtitle: _("...");
+      };
+
+      [end]
+      Button {
+        icon-name: "selection-mode-symbolic";
+      }
+
+      [end]
+      Button {
+        icon-name: "edit-find-symbolic";
+      }
+    }
+
+    Gtk.ScrolledWindow {
+//xz if it working
+//     propagate-natural-height: true;
+
+      max-content-height: 800;
+      min-content-height: 400;
+      min-content-width: 200;
+
+
+      Adw.Clamp {
+
+      maximum-size: 600;
+      tightening-threshold: 200;
+     // margin-bottom: 24;
+        Gtk.ListBox listbox_history {
+          selection-mode: single;
+         // Gtk.ListBoxRow{
+              //why error Gtk-CRITICAL **: 13:45:42.423: Error building template class 'RaccoonHistoryDialog' for an instance of type 'RaccoonHistoryDialog': .:0:0 Invalid object type 'RaccoonHistoryRow'
+            //$RaccoonHistoryRow d {}
+         // }
+        }
+      }
+    }
+  }
+}

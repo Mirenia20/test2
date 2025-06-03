@@ -1,0 +1,37 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $RaccoonFileBrowserPage: Adw.NavigationPage {
+tag:"analysis";
+
+Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      show-back-button:true;
+      title-widget:
+            Adw.WindowTitle {
+                title:"~";
+            };
+
+      [start]
+      Button  {
+        icon-name: "history-undo-symbolic";
+        styles [
+          "iconcolor",
+        ]
+
+      }
+
+      [end]
+      MenuButton {
+        icon-name: "open-menu-symbolic";
+        tooltip-text: _("Main Menu");
+        primary: true;
+
+      }
+    }//headerbar
+  content:
+
+}//toolbarview
+}
