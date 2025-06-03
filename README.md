@@ -8,3 +8,27 @@ Build
     sudo ninja -C build install
     ./build/src/racoon
 
+
+    asdf
+
+
+    as
+    df
+    dsaf
+    ads
+    fdsa
+
+    das
+    as
+    asdf
+    adsf
+    ads
+    fas
+    df
+    ads
+    ads
+    f
+    adsf
+    ads
+    f
+
