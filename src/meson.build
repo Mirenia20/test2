@@ -6,8 +6,9 @@ racoon_sources = [
 	'preferences_dialog.vala',
 	'history_row.vala',
 	'path_row.vala',
-	'analysis_page.vala',
-	'main_page.vala',
+        'analysis_page.vala',
+        'utils.vala',
+        'main_page.vala',
     ]
 
 racoon_deps = [
