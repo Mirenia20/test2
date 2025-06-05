@@ -78,9 +78,11 @@ namespace Raccoon{
 
 
         private Adw.NavigationView viewer;
+        private DirectoryHistory history;
 
         public AnalysisPage(Adw.NavigationView viewer) {
             this.viewer = viewer;
+            this.history = new DirectoryHistory();
         }
 
 
@@ -93,9 +95,7 @@ namespace Raccoon{
             var settings_pref = new Settings("Raccoon.jh.xz");
 
             var virtual_root = GLib.File.new_for_uri("virtual://root");
-            List<GLib.File> history = null;
-            history.append(virtual_root);
-            unowned List<GLib.File>? current = history.last();
+            history.add_file(virtual_root);
 
             refresh_virtual_root(model, settings_pref);
 
@@ -227,28 +227,27 @@ namespace Raccoon{
             });
 
             prev_button.clicked.connect(() => {
-                if (current != null && current.prev != null) {
-                    current = current.prev;
-
-                    if (current.data.get_uri() == "virtual://root/") {
+                var file = history.go_prev();
+                if (file != null) {
+                    if (file.get_uri() == "virtual://root/") {
                         refresh_virtual_root(model, settings_pref);
                         ((Adw.WindowTitle) top_headbar.title_widget).title = "~";
                     } else {
-                        handle_navigation(model, current.data, settings_pref.get_strv("uris"));
-                        create_files_lists(model, current.data);
-                        ((Adw.WindowTitle) top_headbar.title_widget).title = current.data.get_path();
+                        handle_navigation(model, file, settings_pref.get_strv("uris"));
+                        create_files_lists(model, file);
+                        ((Adw.WindowTitle) top_headbar.title_widget).title = file.get_path();
                     }
-                    update_navigation_buttons(prev_button, next_button, current);
+                    update_navigation_buttons();
                 }
             });
 
             next_button.clicked.connect(() => {
-                if (current != null && current.next != null) {
-                    current = current.next;
-                    create_files_lists(model, current.data);
-                    handle_navigation(model, current.data, settings_pref.get_strv("uris"));
-                    update_navigation_buttons(prev_button, next_button, current);
-                    ((Adw.WindowTitle) top_headbar.title_widget).title = current.data.get_uri();
+                var file = history.go_next();
+                if (file != null) {
+                    create_files_lists(model, file);
+                    handle_navigation(model, file, settings_pref.get_strv("uris"));
+                    update_navigation_buttons();
+                    ((Adw.WindowTitle) top_headbar.title_widget).title = file.get_uri();
                 }
             });
 
@@ -261,10 +260,9 @@ namespace Raccoon{
 
                         var info = file.query_info("standard::type", FileQueryInfoFlags.NONE);
                         if (info.get_file_type() == FileType.DIRECTORY) {
-                            history.append(file);
-                            current = history.last();
+                            history.add_file(file);
                             create_files_lists(model, file);
-                            update_navigation_buttons(prev_button, next_button, current);
+                            update_navigation_buttons();
                             ((Adw.WindowTitle) top_headbar.title_widget).title = file.get_path();
                         }
                     }
@@ -462,13 +460,9 @@ namespace Raccoon{
             }
         }
 
-        public void update_navigation_buttons (
-            unowned Gtk.Button prev_button, unowned Gtk.Button next_button, 
-            unowned List<GLib.File>? current
-            ) {
-
-            prev_button.sensitive = current != null && current.prev != null;
-            next_button.sensitive = current != null && current.next != null;
+        public void update_navigation_buttons () {
+            prev_button.sensitive = history.has_prev();
+            next_button.sensitive = history.has_next();
         }
 
         public void create_files_lists (GLib.ListStore model, GLib.File file) {
