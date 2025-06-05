@@ -214,7 +214,7 @@ namespace Raccoon{
                 settings_pref.set_string("last-cleanup", now.format("%Y-%m-%d %H:%M:%S"));
 
                 string timestamp = now.format("%Y.%m.%d %H:%M");
-                string size_label = format_file_size((double) total_cleaned, FORM_XIB);
+                string size_label = Utils.format_file_size((double) total_cleaned, FORM_XIB);
                 foreach (var uri in settings_pref.get_strv("uris")) {
                     var file = GLib.File.new_for_uri(uri);
                     if (file.query_exists()) {
@@ -350,7 +350,7 @@ namespace Raccoon{
                         total_bytes += get_recursive_size(file);
                     }
                 }
-                total_size.set_title(format_file_size(total_bytes, form.FORM_XB));
+                total_size.set_title(Utils.format_file_size(total_bytes, form.FORM_XB));
                 total_size.set_subtitle("🗑 Will be deleted");
             }
 
@@ -377,7 +377,7 @@ namespace Raccoon{
 
                 int64 will_delete = total_bytes - excluded_bytes;
 
-                total_size.set_title(format_file_size(will_delete, form.FORM_XB));
+                total_size.set_title(Utils.format_file_size(will_delete, form.FORM_XB));
                 total_size.set_subtitle("🗑 Will be deleted");
             }
 
@@ -416,7 +416,7 @@ namespace Raccoon{
 
         void show_summary_dialog(Gtk.Window parent, int64 bytes_cleaned) {
             var dialog = new Adw.MessageDialog(parent, "🧹 Cleaning Complete", null);
-            dialog.set_body("You have cleaned " + format_file_size(bytes_cleaned, form.FORM_XB) + ".");
+            dialog.set_body("You have cleaned " + Utils.format_file_size(bytes_cleaned, form.FORM_XB) + ".");
             dialog.add_response("ok", "_OK");
             dialog.set_default_response("ok");
             dialog.set_close_response("ok");
@@ -497,27 +497,6 @@ namespace Raccoon{
             list_view.set_factory(item_factory);
         }
 
-        // uint64 to double
-        // check bug with not correct convert size
-        string format_file_size (double bsize, form f) {
-            string[] units = { "B", "KB", "MB", "GB", "PB" };
-            int i = 0;
-            int formats = 1000;
-
-            if (f == FORM_XIB) {
-                formats = 1024;
-                units[1] = "KiB";
-                units[2] = "MiB";
-                units[3] = "GiB";
-                units[4] = "PiB";
-            }
-
-            while (bsize >= formats && i < units.length - 1) {
-                bsize /= formats;
-                i += 1;
-            }
-            return ("%.2f".printf (bsize) + " " + units[i]);
-        }
 
         public inline uint number_of_folder_children (File f) {
 
@@ -656,7 +635,7 @@ namespace Raccoon{
                     var n_items = number_of_folder_children(file);
                     label.label = (n_items != 0 ? n_items.to_string() + " items" : "Empty");
                 } else {
-                    label.label = format_file_size(size, FORM_XB);
+                    label.label = Utils.format_file_size(size, FORM_XB);
                 }
 
                 // Store file in row to access later
