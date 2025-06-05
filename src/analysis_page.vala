@@ -434,31 +434,46 @@ namespace Raccoon{
         // and clean listview and cange to clened page
         // also add list which elm not need to delete
         // if dir is empty emmit toasts "dir is empty"and not go to this dir
+        // rewritten iteratively to avoid deep recursion
         public void delete_files_recursive(string uri) {
-            var dir = File.new_for_uri(uri);
+            var root = File.new_for_uri(uri);
+            var dirs = new Gee.ArrayList<File>();
+            var delete_order = new Gee.ArrayList<File>();
 
-            try {
-                var enumerator = dir.enumerate_children(
-                    FileAttribute.STANDARD_NAME,
-                    FileQueryInfoFlags.NONE
-                    );
+            dirs.add(root);
 
-                FileInfo? info;
-                while ((info = enumerator.next_file()) != null) {
-                    var child = dir.get_child(info.get_name());
+            // depth-first traversal collecting directories
+            while (dirs.size > 0) {
+                var dir = dirs.remove_at(dirs.size - 1);
+                delete_order.add(dir);
 
-                    if (child.query_file_type(FileQueryInfoFlags.NONE, null) == FileType.DIRECTORY) {
-                        // Recursively delete contents of the subdirectory
-                        delete_files_recursive(child.get_uri());
-                    } else {
-                        child.delete();
+                try {
+                    var enumerator = dir.enumerate_children(
+                        FileAttribute.STANDARD_NAME 
+                            + "," + FileAttribute.STANDARD_TYPE,
+                        FileQueryInfoFlags.NONE);
+
+                    FileInfo? info;
+                    while ((info = enumerator.next_file()) != null) {
+                        var child = dir.get_child(info.get_name());
+                        if (info.get_file_type() == FileType.DIRECTORY) {
+                            dirs.add(child);
+                        } else {
+                            child.delete();
+                        }
                     }
+                } catch (Error e) {
+                    stderr.printf("Error enumerating %s: %s\n", dir.get_uri(), e.message);
                 }
+            }
 
-                // After deleting all contents, delete the now-empty directory
-                dir.delete();
-            } catch (Error e) {
-                stderr.printf("Error deleting %s: %s\n", uri, e.message);
+            // delete directories in reverse order so children are removed first
+            for (int i = delete_order.size - 1; i >= 0; i--) {
+                try {
+                    delete_order.get(i).delete();
+                } catch (Error e) {
+                    stderr.printf("Error deleting %s: %s\n", delete_order.get(i).get_uri(), e.message);
+                }
             }
         }
 
