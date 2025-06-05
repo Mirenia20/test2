@@ -519,29 +519,7 @@ namespace Raccoon{
             return ("%.2f".printf (bsize) + " " + units[i]);
         }
 
-        public inline uint number_of_folder_children (File f) {
 
-            var folder = f.enumerate_children ("standard::name",
-                                               FileQueryInfoFlags.NONE, null);
-            uint counter = 0;
-            FileInfo file_info;
-            while ((file_info = folder.next_file ()) != null) {
-                counter++;
-            }
-
-            return counter;
-        }
-        public string get_icon_from_mime_type(string mime_type) {
-            if (mime_type.has_prefix("text/")) {
-                return "text-x-generic";
-            } else if (mime_type.has_prefix("image/")) {
-                return "image-x-generic";
-            } else if (mime_type == "inode/directory") {
-                return "folder";
-            } else {
-                return "application-x-unknown";
-            }
-        }
 
         // in class add member File f in xxx_row
 
@@ -647,13 +625,13 @@ namespace Raccoon{
                 var name = info.get_name();
                 var size = info.get_size();
                 var mime = info.get_content_type();
-                var icon_name = get_icon_from_mime_type(mime);
+                var icon_name = Utils.get_icon_from_mime_type(mime);
 
                 row.title = name;
                 icon.set_from_icon_name(icon_name);
 
                 if (info.get_file_type() == FileType.DIRECTORY) {
-                    var n_items = number_of_folder_children(file);
+                    var n_items = Utils.number_of_folder_children(file);
                     label.label = (n_items != 0 ? n_items.to_string() + " items" : "Empty");
                 } else {
                     label.label = format_file_size(size, FORM_XB);
