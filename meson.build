@@ -25,6 +25,7 @@ add_project_arguments('-DGETTEXT_PACKAGE="' + meson.project_name () + '"', langu
 
 subdir('data')
 subdir('src')
+subdir('tests')
 subdir('po')
 
 gnome.post_install(
