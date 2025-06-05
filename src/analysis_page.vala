@@ -93,7 +93,7 @@ namespace Raccoon{
             var settings_pref = new Settings("Raccoon.jh.xz");
 
             var virtual_root = GLib.File.new_for_uri("virtual://root");
-            List<GLib.File> history = null;
+            List<GLib.File> history = new List<GLib.File>();
             history.append(virtual_root);
             unowned List<GLib.File>? current = history.last();
 
