@@ -548,6 +548,7 @@ namespace Raccoon{
                 var icon = new Gtk.Image ();
                 var label = new Gtk.Label ("");
                 var check = new Gtk.CheckButton();
+                check.get_style_context().add_class("selection-check");
 
                 icon.set_icon_size (Gtk.IconSize.LARGE);
                 row.add_prefix (icon);
@@ -656,6 +657,11 @@ namespace Raccoon{
 
 
                 check.set_visible(selection_mode);
+                if (selection_mode) {
+                    check.get_style_context().add_class("visible");
+                } else {
+                    check.get_style_context().remove_class("visible");
+                }
                 row.set_data("file", file);
             } catch (Error e) {
                 stderr.printf("Info error: %s\n", e.message);
