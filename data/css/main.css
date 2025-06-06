@@ -182,3 +182,12 @@ row .content .path popover treeview:selected {
   color: @warning_color;
 }
 
+
+/* Fade-in animation for selection checkboxes */
+.selection-check {
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+}
+.selection-check.visible {
+  opacity: 1;
+}

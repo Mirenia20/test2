@@ -93,7 +93,7 @@ namespace Raccoon{
             var settings_pref = new Settings("Raccoon.jh.xz");
 
             var virtual_root = GLib.File.new_for_uri("virtual://root");
-            List<GLib.File> history = null;
+            List<GLib.File> history = new List<GLib.File>();
             history.append(virtual_root);
             unowned List<GLib.File>? current = history.last();
 
@@ -406,31 +406,46 @@ namespace Raccoon{
         // and clean listview and cange to clened page
         // also add list which elm not need to delete
         // if dir is empty emmit toasts "dir is empty"and not go to this dir
+        // rewritten iteratively to avoid deep recursion
         public void delete_files_recursive(string uri) {
-            var dir = File.new_for_uri(uri);
+            var root = File.new_for_uri(uri);
+            var dirs = new Gee.ArrayList<File>();
+            var delete_order = new Gee.ArrayList<File>();
 
-            try {
-                var enumerator = dir.enumerate_children(
-                    FileAttribute.STANDARD_NAME,
-                    FileQueryInfoFlags.NONE
-                    );
+            dirs.add(root);
 
-                FileInfo? info;
-                while ((info = enumerator.next_file()) != null) {
-                    var child = dir.get_child(info.get_name());
+            // depth-first traversal collecting directories
+            while (dirs.size > 0) {
+                var dir = dirs.remove_at(dirs.size - 1);
+                delete_order.add(dir);
 
-                    if (child.query_file_type(FileQueryInfoFlags.NONE, null) == FileType.DIRECTORY) {
-                        // Recursively delete contents of the subdirectory
-                        delete_files_recursive(child.get_uri());
-                    } else {
-                        child.delete();
+                try {
+                    var enumerator = dir.enumerate_children(
+                        FileAttribute.STANDARD_NAME 
+                            + "," + FileAttribute.STANDARD_TYPE,
+                        FileQueryInfoFlags.NONE);
+
+                    FileInfo? info;
+                    while ((info = enumerator.next_file()) != null) {
+                        var child = dir.get_child(info.get_name());
+                        if (info.get_file_type() == FileType.DIRECTORY) {
+                            dirs.add(child);
+                        } else {
+                            child.delete();
+                        }
                     }
+                } catch (Error e) {
+                    stderr.printf("Error enumerating %s: %s\n", dir.get_uri(), e.message);
                 }
+            }
 
-                // After deleting all contents, delete the now-empty directory
-                dir.delete();
-            } catch (Error e) {
-                stderr.printf("Error deleting %s: %s\n", uri, e.message);
+            // delete directories in reverse order so children are removed first
+            for (int i = delete_order.size - 1; i >= 0; i--) {
+                try {
+                    delete_order.get(i).delete();
+                } catch (Error e) {
+                    stderr.printf("Error deleting %s: %s\n", delete_order.get(i).get_uri(), e.message);
+                }
             }
         }
 
@@ -470,29 +485,7 @@ namespace Raccoon{
         }
 
 
-        public inline uint number_of_folder_children (File f) {
 
-            var folder = f.enumerate_children ("standard::name",
-                                               FileQueryInfoFlags.NONE, null);
-            uint counter = 0;
-            FileInfo file_info;
-            while ((file_info = folder.next_file ()) != null) {
-                counter++;
-            }
-
-            return counter;
-        }
-        public string get_icon_from_mime_type(string mime_type) {
-            if (mime_type.has_prefix("text/")) {
-                return "text-x-generic";
-            } else if (mime_type.has_prefix("image/")) {
-                return "image-x-generic";
-            } else if (mime_type == "inode/directory") {
-                return "folder";
-            } else {
-                return "application-x-unknown";
-            }
-        }
 
         // in class add member File f in xxx_row
 
@@ -506,6 +499,7 @@ namespace Raccoon{
                 var icon = new Gtk.Image ();
                 var label = new Gtk.Label ("");
                 var check = new Gtk.CheckButton();
+                check.get_style_context().add_class("selection-check");
 
                 icon.set_icon_size (Gtk.IconSize.LARGE);
                 row.add_prefix (icon);
@@ -598,13 +592,13 @@ namespace Raccoon{
                 var name = info.get_name();
                 var size = info.get_size();
                 var mime = info.get_content_type();
-                var icon_name = get_icon_from_mime_type(mime);
+                var icon_name = Utils.get_icon_from_mime_type(mime);
 
                 row.title = name;
                 icon.set_from_icon_name(icon_name);
 
                 if (info.get_file_type() == FileType.DIRECTORY) {
-                    var n_items = number_of_folder_children(file);
+                    var n_items = Utils.number_of_folder_children(file);
                     label.label = (n_items != 0 ? n_items.to_string() + " items" : "Empty");
                 } else {
                     label.label = Utils.format_file_size(size, FORM_XB);
@@ -614,6 +608,11 @@ namespace Raccoon{
 
 
                 check.set_visible(selection_mode);
+                if (selection_mode) {
+                    check.get_style_context().add_class("visible");
+                } else {
+                    check.get_style_context().remove_class("visible");
+                }
                 row.set_data("file", file);
             } catch (Error e) {
                 stderr.printf("Info error: %s\n", e.message);
