@@ -16,6 +16,9 @@ template $RaccoonHistoryDialog : Adw.Dialog {
           label: _("Clear");
           icon-name: "user-trash-symbolic";
         }
+        styles [
+          "destructive-action",
+        ]
       }
 
       title-widget: Adw.WindowTitle {
@@ -26,11 +29,13 @@ template $RaccoonHistoryDialog : Adw.Dialog {
       [end]
       Button {
         icon-name: "selection-mode-symbolic";
+        visible: false;
       }
 
       [end]
       Button {
         icon-name: "edit-find-symbolic";
+        visible: false;
       }
     }
 
