@@ -56,21 +56,16 @@ public class MainPage : Adw.NavigationPage {
         settings_pref = new GLib.Settings("Raccoon.jh.xz");
 
         uris = settings_pref.get_strv("uris");
-      
-        if(uris.length == 0 ){
-            analysis_button.set_sensitive(false);
-            hint_box.set_visible(true);
-        } else {
-            hint_box.set_visible(false);
-        }
+
+        analysis_button.set_sensitive(Raccoon.has_paths(settings_pref));
+        hint_box.set_visible(!Raccoon.has_paths(settings_pref));
         
 
-        settings_pref.changed["uris"].connect (() => {
-            string[] uriss = settings_pref.get_strv("uris");
-            bool has_uris = uriss.length != 0;
-
-            hint_box.set_visible(!has_uris);
-            analysis_button.set_sensitive(has_uris);
+        settings_pref.changed["uris"].connect(() => {
+            uris = settings_pref.get_strv("uris");
+            bool available = Raccoon.has_paths(settings_pref);
+            hint_box.set_visible(!available);
+            analysis_button.set_sensitive(available);
         });
 
 
