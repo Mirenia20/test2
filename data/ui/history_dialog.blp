@@ -39,28 +39,19 @@ template $RaccoonHistoryDialog : Adw.Dialog {
       }
     }
 
-    Gtk.ScrolledWindow {
-//xz if it working
-//     propagate-natural-height: true;
+  Gtk.ScrolledWindow {
+    propagate-natural-height: true;
+    max-content-height: 800;
+    min-content-height: 400;
+    margin-start : 10;
+    margin-end: 10;
+    margin-top: 10;
 
-      max-content-height: 800;
-      min-content-height: 400;
-      min-content-width: 200;
-
-
-      Adw.Clamp {
-
-      maximum-size: 600;
-      tightening-threshold: 200;
-     // margin-bottom: 24;
-        Gtk.ListBox listbox_history {
-          selection-mode: single;
-         // Gtk.ListBoxRow{
-              //why error Gtk-CRITICAL **: 13:45:42.423: Error building template class 'RaccoonHistoryDialog' for an instance of type 'RaccoonHistoryDialog': .:0:0 Invalid object type 'RaccoonHistoryRow'
-            //$RaccoonHistoryRow d {}
-         // }
-        }
+    Adw.Clamp {
+      Gtk.ListBox listbox_history {
+        selection-mode: single;
       }
     }
+  }
   }
 }
