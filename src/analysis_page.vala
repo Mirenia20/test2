@@ -188,7 +188,7 @@ namespace Raccoon{
                 foreach (var uri in settings_pref.get_strv("uris")) {
                     var file = GLib.File.new_for_uri(uri);
                     if (file.query_exists()) {
-                        total_cleaned += get_recursive_size(file);
+                        total_cleaned += Utils.get_recursive_size(file);
                         delete_files_recursive(uri);
                     }
                 }
@@ -214,7 +214,7 @@ namespace Raccoon{
                 settings_pref.set_string("last-cleanup", now.format("%Y-%m-%d %H:%M:%S"));
 
                 string timestamp = now.format("%Y.%m.%d %H:%M");
-                string size_label = format_file_size((double) total_cleaned, FORM_XIB);
+                string size_label = Utils.format_file_size((double) total_cleaned, FORM_XIB);
                 foreach (var uri in settings_pref.get_strv("uris")) {
                     var file = GLib.File.new_for_uri(uri);
                     if (file.query_exists()) {
@@ -345,10 +345,10 @@ namespace Raccoon{
                 foreach (var uri in uris) {
                     var file = GLib.File.new_for_uri(uri);
                     if (file.query_exists()) {
-                        total_bytes += get_recursive_size(file);
+                        total_bytes += Utils.get_recursive_size(file);
                     }
                 }
-                total_size.set_title(format_file_size(total_bytes, form.FORM_XB));
+                total_size.set_title(Utils.format_file_size(total_bytes, form.FORM_XB));
                 total_size.set_subtitle("🗑 Will be deleted");
             }
 
@@ -365,7 +365,7 @@ namespace Raccoon{
                     var file = model.get_item(i) as GLib.File;
                     if (file == null) continue;
 
-                    int64 file_size = get_recursive_size(file);
+                    int64 file_size = Utils.get_recursive_size(file);
                     total_bytes += file_size;
 
                     if (multi.get_selection().contains(i)) {
@@ -375,46 +375,18 @@ namespace Raccoon{
 
                 int64 will_delete = total_bytes - excluded_bytes;
 
-                total_size.set_title(format_file_size(will_delete, form.FORM_XB));
+                total_size.set_title(Utils.format_file_size(will_delete, form.FORM_XB));
                 total_size.set_subtitle("🗑 Will be deleted");
             }
 
 
-        public int64 get_recursive_size(GLib.File file) {
-            int64 size = 0;
-
-            try {
-                var info = file.query_info("standard::type,standard::size", FileQueryInfoFlags.NONE);
-                switch (info.get_file_type()) {
-                    case FileType.REGULAR:
-                        return info.get_size();
-
-                    case FileType.DIRECTORY:
-                        var enumerator = file.enumerate_children("standard::name", FileQueryInfoFlags.NONE);
-                        FileInfo? file_info;
-
-                        while ((file_info = enumerator.next_file()) != null) {
-                            var child = file.get_child(file_info.get_name());
-                            size += get_recursive_size(child);
-                        }
-                        break;
-
-                    default:
-                        break;
-                }
-            } catch (Error e) {
-                warning("Size error for file %s: %s", file.get_uri(), e.message);
-            }
-
-            return size;
-        }
 
 
 
 
         void show_summary_dialog(Gtk.Window parent, int64 bytes_cleaned) {
             var dialog = new Adw.MessageDialog(parent, "🧹 Cleaning Complete", null);
-            dialog.set_body("You have cleaned " + format_file_size(bytes_cleaned, form.FORM_XB) + ".");
+            dialog.set_body("You have cleaned " + Utils.format_file_size(bytes_cleaned, form.FORM_XB) + ".");
             dialog.add_response("ok", "_OK");
             dialog.set_default_response("ok");
             dialog.set_close_response("ok");
@@ -432,31 +404,46 @@ namespace Raccoon{
         // and clean listview and cange to clened page
         // also add list which elm not need to delete
         // if dir is empty emmit toasts "dir is empty"and not go to this dir
+        // rewritten iteratively to avoid deep recursion
         public void delete_files_recursive(string uri) {
-            var dir = File.new_for_uri(uri);
+            var root = File.new_for_uri(uri);
+            var dirs = new Gee.ArrayList<File>();
+            var delete_order = new Gee.ArrayList<File>();
 
-            try {
-                var enumerator = dir.enumerate_children(
-                    FileAttribute.STANDARD_NAME,
-                    FileQueryInfoFlags.NONE
-                    );
+            dirs.add(root);
 
-                FileInfo? info;
-                while ((info = enumerator.next_file()) != null) {
-                    var child = dir.get_child(info.get_name());
+            // depth-first traversal collecting directories
+            while (dirs.size > 0) {
+                var dir = dirs.remove_at(dirs.size - 1);
+                delete_order.add(dir);
 
-                    if (child.query_file_type(FileQueryInfoFlags.NONE, null) == FileType.DIRECTORY) {
-                        // Recursively delete contents of the subdirectory
-                        delete_files_recursive(child.get_uri());
-                    } else {
-                        child.delete();
+                try {
+                    var enumerator = dir.enumerate_children(
+                        FileAttribute.STANDARD_NAME 
+                            + "," + FileAttribute.STANDARD_TYPE,
+                        FileQueryInfoFlags.NONE);
+
+                    FileInfo? info;
+                    while ((info = enumerator.next_file()) != null) {
+                        var child = dir.get_child(info.get_name());
+                        if (info.get_file_type() == FileType.DIRECTORY) {
+                            dirs.add(child);
+                        } else {
+                            child.delete();
+                        }
                     }
+                } catch (Error e) {
+                    stderr.printf("Error enumerating %s: %s\n", dir.get_uri(), e.message);
                 }
+            }
 
-                // After deleting all contents, delete the now-empty directory
-                dir.delete();
-            } catch (Error e) {
-                stderr.printf("Error deleting %s: %s\n", uri, e.message);
+            // delete directories in reverse order so children are removed first
+            for (int i = delete_order.size - 1; i >= 0; i--) {
+                try {
+                    delete_order.get(i).delete();
+                } catch (Error e) {
+                    stderr.printf("Error deleting %s: %s\n", delete_order.get(i).get_uri(), e.message);
+                }
             }
         }
 
@@ -491,51 +478,8 @@ namespace Raccoon{
             list_view.set_factory(item_factory);
         }
 
-        // uint64 to double
-        // check bug with not correct convert size
-        string format_file_size (double bsize, form f) {
-            string[] units = { "B", "KB", "MB", "GB", "PB" };
-            int i = 0;
-            int formats = 1000;
 
-            if (f == FORM_XIB) {
-                formats = 1024;
-                units[1] = "KiB";
-                units[2] = "MiB";
-                units[3] = "GiB";
-                units[4] = "PiB";
-            }
 
-            while (bsize >= formats && i < units.length - 1) {
-                bsize /= formats;
-                i += 1;
-            }
-            return ("%.2f".printf (bsize) + " " + units[i]);
-        }
-
-        public inline uint number_of_folder_children (File f) {
-
-            var folder = f.enumerate_children ("standard::name",
-                                               FileQueryInfoFlags.NONE, null);
-            uint counter = 0;
-            FileInfo file_info;
-            while ((file_info = folder.next_file ()) != null) {
-                counter++;
-            }
-
-            return counter;
-        }
-        public string get_icon_from_mime_type(string mime_type) {
-            if (mime_type.has_prefix("text/")) {
-                return "text-x-generic";
-            } else if (mime_type.has_prefix("image/")) {
-                return "image-x-generic";
-            } else if (mime_type == "inode/directory") {
-                return "folder";
-            } else {
-                return "application-x-unknown";
-            }
-        }
 
         // in class add member File f in xxx_row
 
@@ -549,6 +493,7 @@ namespace Raccoon{
                 var icon = new Gtk.Image ();
                 var label = new Gtk.Label ("");
                 var check = new Gtk.CheckButton();
+                check.get_style_context().add_class("selection-check");
 
                 icon.set_icon_size (Gtk.IconSize.LARGE);
                 row.add_prefix (icon);
@@ -641,22 +586,27 @@ namespace Raccoon{
                 var name = info.get_name();
                 var size = info.get_size();
                 var mime = info.get_content_type();
-                var icon_name = get_icon_from_mime_type(mime);
+                var icon_name = Utils.get_icon_from_mime_type(mime);
 
                 row.title = name;
                 icon.set_from_icon_name(icon_name);
 
                 if (info.get_file_type() == FileType.DIRECTORY) {
-                    var n_items = number_of_folder_children(file);
+                    var n_items = Utils.number_of_folder_children(file);
                     label.label = (n_items != 0 ? n_items.to_string() + " items" : "Empty");
                 } else {
-                    label.label = format_file_size(size, FORM_XB);
+                    label.label = Utils.format_file_size(size, FORM_XB);
                 }
 
                 // Store file in row to access later
 
 
                 check.set_visible(selection_mode);
+                if (selection_mode) {
+                    check.get_style_context().add_class("visible");
+                } else {
+                    check.get_style_context().remove_class("visible");
+                }
                 row.set_data("file", file);
             } catch (Error e) {
                 stderr.printf("Info error: %s\n", e.message);
