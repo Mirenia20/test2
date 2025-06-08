@@ -2,8 +2,7 @@
 \hypertarget{classRaccoon_1_1HistoryDialog}{}\label{classRaccoon_1_1HistoryDialog}\index{Raccoon::HistoryDialog@{Raccoon::HistoryDialog}}
 
 
-Inheritance diagram for Raccoon\+::History\+Dialog\+:
-\nopagebreak
+Inheritance diagram for Raccoon\+::History\+Dialog\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -12,8 +11,7 @@ Inheritance diagram for Raccoon\+::History\+Dialog\+:
 \end{figure}
 
 
-Collaboration diagram for Raccoon\+::History\+Dialog\+:
-\nopagebreak
+Collaboration diagram for Raccoon\+::History\+Dialog\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -25,9 +23,11 @@ Collaboration diagram for Raccoon\+::History\+Dialog\+:
 \item 
 \mbox{\hyperlink{classRaccoon_1_1HistoryDialog_ad86932eb4262170a974f5ae01c934310}{History\+Dialog}} (Gtk.\+Widget parent)
 \item 
-listbox\+\_\+history \mbox{\hyperlink{classRaccoon_1_1HistoryDialog_a9ff69bd8e1bce9c8167944810a0a6059}{insert}} (new \mbox{\hyperlink{classRaccoon_1_1HistoryRow}{Raccoon.\+History\+Row}}(),-\/1)
+\mbox{\hyperlink{classRaccoon_1_1HistoryDialog_a00910b05c298772d695d7f1a07bfadfb}{load\+\_\+history}} ()
 \item 
-listbox\+\_\+history \mbox{\hyperlink{classRaccoon_1_1HistoryDialog_a9ff69bd8e1bce9c8167944810a0a6059}{insert}} (new \mbox{\hyperlink{classRaccoon_1_1HistoryRow}{Raccoon.\+History\+Row}}(),-\/1)
+clear\+\_\+all clicked \mbox{\hyperlink{classRaccoon_1_1HistoryDialog_aa9f1083a3331cfb337a8a88369d45458}{connect}} (clear\+\_\+history)
+\item 
+void \mbox{\hyperlink{classRaccoon_1_1HistoryDialog_a72d0ac5798af0d831ead49d65be05235}{load\+\_\+history}} ()
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -46,17 +46,23 @@ Raccoon\+::\+History\+Dialog\+::\+History\+Dialog (\begin{DoxyParamCaption}\item
 
 
 \doxysubsection{Member Function Documentation}
-\Hypertarget{classRaccoon_1_1HistoryDialog_a9ff69bd8e1bce9c8167944810a0a6059}\index{Raccoon::HistoryDialog@{Raccoon::HistoryDialog}!insert@{insert}}
-\index{insert@{insert}!Raccoon::HistoryDialog@{Raccoon::HistoryDialog}}
-\doxysubsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily \label{classRaccoon_1_1HistoryDialog_a9ff69bd8e1bce9c8167944810a0a6059} 
-listbox\+\_\+history Raccoon\+::\+History\+Dialog\+::insert (\begin{DoxyParamCaption}\item[{new Raccoon.}]{History\+Row}{(), }\item[{-\/}]{1}{}\end{DoxyParamCaption})}
+\Hypertarget{classRaccoon_1_1HistoryDialog_aa9f1083a3331cfb337a8a88369d45458}\index{Raccoon::HistoryDialog@{Raccoon::HistoryDialog}!connect@{connect}}
+\index{connect@{connect}!Raccoon::HistoryDialog@{Raccoon::HistoryDialog}}
+\doxysubsubsection{\texorpdfstring{connect()}{connect()}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1HistoryDialog_aa9f1083a3331cfb337a8a88369d45458} 
+clear\+\_\+all clicked Raccoon\+::\+History\+Dialog\+::connect (\begin{DoxyParamCaption}\item[{clear\+\_\+history}]{}{}\end{DoxyParamCaption})}
 
-\Hypertarget{classRaccoon_1_1HistoryDialog_a9ff69bd8e1bce9c8167944810a0a6059}\index{Raccoon::HistoryDialog@{Raccoon::HistoryDialog}!insert@{insert}}
-\index{insert@{insert}!Raccoon::HistoryDialog@{Raccoon::HistoryDialog}}
-\doxysubsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily \label{classRaccoon_1_1HistoryDialog_a9ff69bd8e1bce9c8167944810a0a6059} 
-listbox\+\_\+history Raccoon\+::\+History\+Dialog\+::insert (\begin{DoxyParamCaption}\item[{new Raccoon.}]{History\+Row}{(), }\item[{-\/}]{1}{}\end{DoxyParamCaption})}
+\Hypertarget{classRaccoon_1_1HistoryDialog_a00910b05c298772d695d7f1a07bfadfb}\index{Raccoon::HistoryDialog@{Raccoon::HistoryDialog}!load\_history@{load\_history}}
+\index{load\_history@{load\_history}!Raccoon::HistoryDialog@{Raccoon::HistoryDialog}}
+\doxysubsubsection{\texorpdfstring{load\_history()}{load\_history()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1HistoryDialog_a00910b05c298772d695d7f1a07bfadfb} 
+Raccoon\+::\+History\+Dialog\+::load\+\_\+history (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRaccoon_1_1HistoryDialog_a72d0ac5798af0d831ead49d65be05235}\index{Raccoon::HistoryDialog@{Raccoon::HistoryDialog}!load\_history@{load\_history}}
+\index{load\_history@{load\_history}!Raccoon::HistoryDialog@{Raccoon::HistoryDialog}}
+\doxysubsubsection{\texorpdfstring{load\_history()}{load\_history()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classRaccoon_1_1HistoryDialog_a72d0ac5798af0d831ead49d65be05235} 
+void Raccoon\+::\+History\+Dialog\+::load\+\_\+history (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -69,10 +75,9 @@ Raccoon\+::\+History\+Dialog\+::construct}
 
 {\bfseries Initial value\+:}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\{}
-\DoxyCodeLine{\ \ \ \ \ \ \ }
-\DoxyCodeLine{\ \ \ \ \ \ \ }
-\DoxyCodeLine{\ \ \ \ \ \ \ \ listbox\_history.insert(\textcolor{keyword}{new}\ \mbox{\hyperlink{namespaceRaccoon}{Raccoon}}.\mbox{\hyperlink{classRaccoon_1_1HistoryRow}{HistoryRow}}(),-\/1)}
+\DoxyCodeLine{\{\ }
+\DoxyCodeLine{\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ path\_file\_history\ =\ GLib.Environment.get\_user\_data\_dir()\ +\ \textcolor{stringliteral}{"{}/Raccoon/history.gvb"{}}}
 
 \end{DoxyCode}
 

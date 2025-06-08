@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['list_5fdirectory_0',['list_directory',['../classRaccoon_1_1FileBrowserPage.html#a5e071fb67f03c9f9d16133f8d9bc1c51',1,'Raccoon::FileBrowserPage']]]
+  ['main_0',['main',['../main_8vala.html#a889673e0ce3e183d4554a047859eed12',1,'main.vala']]],
+  ['mainpage_1',['MainPage',['../classRaccoon_1_1MainPage.html#a13ea3ce1ba2d6cfc4357a796f3eed776',1,'Raccoon::MainPage']]]
 ];

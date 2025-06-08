@@ -1,31 +1,14 @@
 test_deps = [
-  dependency('gtk4'),
-  dependency('libadwaita-1'),
+  raccoon_dep,  # оголошено у корені
   dependency('gio-2.0'),
-  dependency('gee-0.8'),
-  dependency('polkit-gobject-1'),
+  dependency('glib-2.0')
 ]
 
-ui_build_dir = meson.build_root() / 'data'
-
-exe = executable('analysis_page_test',
-  ['test_analysis_page.vala', '../src/analysis_page.vala'],
+utils_test = executable('test_utils',
+  ['test_utils.vala'],
   dependencies: test_deps,
-  vala_args: ['--gresources', '../data/raccoon.gresource.xml', '--gresourcesdir', ui_build_dir],
+  vala_args: ['--enable-experimental']
 )
 
-test('analysis_page', exe)
-    dependency('gio-2.0'),
-    dependency('glib-2.0')
-]
+test('utils', utils_test)
 
-settings_utils_test = executable('test_settings_utils',
-    ['test_settings_utils.vala', '../src/settings_utils.vala'],
-    dependencies: test_deps,
-    vala_args: ['--enable-experimental'],
-    include_directories: config_inc
-)
-
-test('settings_utils', settings_utils_test,
-    args: [meson.project_source_root() / 'data']
-)

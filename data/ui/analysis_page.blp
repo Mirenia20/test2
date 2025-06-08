@@ -5,11 +5,11 @@ template $RaccoonAnalysisPage: Adw.NavigationPage {
 
 
   Adw.ToolbarView {
+      //bottom-bar-style:raised;
     [bottom]
     Adw.HeaderBar  bottom_headbar{
       show-back-button: false;
       show-end-title-buttons: false;
-
       title-widget: Adw.WindowTitle  total_size{
       };
 
@@ -95,17 +95,18 @@ content: Gtk.Box container{
      
 
       ScrolledWindow {
-      max-content-height: 800;
-      min-content-height: 400;
-      min-content-width: 200;
+       // max-content-height: 800;
+        min-content-height: 400;
+        min-content-width: 200;
+        propagate-natural-height: true;
+        Box box_list_view{
+          orientation: vertical;
+          ListView list_view {
+            factory: SignalListItemFactory item_factory {};
+          }
+        
 
-      Box {
-        orientation: vertical;
-
-        ListView list_view {
-          factory: SignalListItemFactory item_factory {};
         }
-      }
       }
     };
   }

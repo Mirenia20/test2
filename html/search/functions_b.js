@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['set_5faccels_5ffor_5faction_0',['set_accels_for_action',['../classRaccoon_1_1Application.html#a47a70f7c6f8e039fcd7224c63701241c',1,'Raccoon::Application']]],
-  ['set_5fpath_1',['set_path',['../classRaccoon_1_1PathRow.html#a37cbd5d3a2b4a319c57f2011f1e4a35e',1,'Raccoon::PathRow']]]
+  ['window_0',['Window',['../classRaccoon_1_1Window.html#a88858bc32e8d4681dd2aadac3051ec92',1,'Raccoon::Window']]]
 ];

@@ -61,7 +61,7 @@ install_data('Raccoon.jh.xz.gschema.xml',
 compile_schemas = find_program('glib-compile-schemas', required: false, disabler: true)
 
 if compile_schemas.found()
-  message('✔ glib-compile-schemas found at: ' + compile_schemas.path())
+  message('glib-compile-schemas found at: ' + compile_schemas.path())
   
   test('Validate schema file',
     compile_schemas,
@@ -73,7 +73,7 @@ meson.add_install_script(
 )
 
 else
-  message('❌ glib-compile-schemas NOT found — schema will not be compiled on install')
+  message('glib-compile-schemas NOT found - schema will not be compiled on install')
 endif
 
 

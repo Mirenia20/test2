@@ -56,7 +56,7 @@ public class Application : Adw.Application {
             translator_credits = _("translator-credits"),
             version = "0.1.0",
             developers = developers,
-            copyright = "© 2025 Unknown",
+            copyright = " 2025 Unknown",
         };
 
         about.present (this.active_window);

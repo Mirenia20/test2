@@ -1,49 +1,60 @@
 namespace Raccoon {
     public class DirectoryHistory : Object {
-        private Gee.ArrayList<GLib.File> entries;
-        private int index = -1;
+        private GLib.List<GLib.File> entries;
+        private unowned GLib.List<GLib.File>? current = null;
 
         public DirectoryHistory() {
-            entries = new Gee.ArrayList<GLib.File>();
+            entries = new GLib.List<GLib.File>();
         }
+
+
 
         public void add_file(GLib.File file) {
-            while (entries.size - 1 > index) {
-                entries.remove_at(entries.size - 1);
+            if (current != null) {
+                unowned GLib.List<GLib.File>? node = current.next;
+                while (node != null) {
+                    unowned GLib.List<GLib.File>? next = node.next;
+                    entries.delete_link(node);
+                    node = next;
+                }
             }
-            entries.add(file);
-            index = entries.size - 1;
+
+            entries.append(file);            
+            current = entries.last();        
+
         }
 
+
+
+
+
         public bool has_prev() {
-            return index > 0;
+            return current != null && current.prev != null;
         }
 
         public bool has_next() {
-            return index >= 0 && index < entries.size - 1;
+            return current != null && current.next != null;
         }
 
         public GLib.File? go_prev() {
             if (has_prev()) {
-                index--;
-                return entries.get(index);
+                current = current.prev;
+                return current.data;
             }
             return null;
         }
 
         public GLib.File? go_next() {
             if (has_next()) {
-                index++;
-                return entries.get(index);
+                current = current.next;
+                return current.data;
             }
             return null;
         }
 
         public GLib.File? get_current() {
-            if (index >= 0 && index < entries.size) {
-                return entries.get(index);
-            }
-            return null;
+            return current != null ? current.data : null;
         }
     }
 }
+

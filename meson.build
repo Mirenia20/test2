@@ -27,7 +27,14 @@ subdir('data')
 subdir('src')
 subdir('tests')
 subdir('po')
-subdir('tests')
+
+
+
+raccoon_dep = declare_dependency(
+  link_with: lib_raccoon,
+  include_directories: include_directories('src')
+)
+
 
 gnome.post_install(
      glib_compile_schemas: true,

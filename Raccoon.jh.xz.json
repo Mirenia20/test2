@@ -17,6 +17,7 @@
     "build-options" : {
         "append-path" : "/usr/lib/sdk/vala/bin",
         "prepend-ld-library-path" : "/usr/lib/sdk/vala/lib",
+        "debug":true, 
         "env" : {
             "G_RESOURCE_DEBUG" : "1"
         }

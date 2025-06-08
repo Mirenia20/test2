@@ -8,9 +8,6 @@ public class PreferencesDialog : Adw.PreferencesDialog {
     private unowned Gtk.Image sheldule_clean;
 
     [GtkChild]
-    private unowned Adw.ComboRow drop_down;
-
-    [GtkChild]
     private unowned Gtk.Button add_path_button;
     private GLib.Settings settings_pref;
 
@@ -33,19 +30,11 @@ public class PreferencesDialog : Adw.PreferencesDialog {
 var theme =  Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
     string[] icons = theme.get_icon_names ();
 
-    foreach (var icon_name in icons) {
-        print ("%s\n", icon_name);
-    }
+ //   foreach (var icon_name in icons) {
+//        print ("%s\n", icon_name);
+  //  }
 
         settings_pref = new GLib.Settings("Raccoon.jh.xz");
-
-        bool has_uris = settings_pref.get_strv("uris").length != 0;
-        drop_down.set_sensitive(has_uris);
-
-        settings_pref.changed["uris"].connect(() => {
-            bool has = settings_pref.get_strv("uris").length != 0;
-            drop_down.set_sensitive(has);
-        });
 
         foreach (var uri in settings_pref.get_strv ("uris")) {
                 var file = File.new_for_uri (uri);

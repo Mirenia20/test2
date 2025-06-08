@@ -1,4 +1,9 @@
+.backg{
 
+          background-color: #1d1d20;
+
+
+}
 
 .dstatus {
     padding: 8px;
@@ -181,9 +186,6 @@ row .content .path popover treeview:selected {
 .reset-button image {
   color: @warning_color;
 }
-
-
-/* Fade-in animation for selection checkboxes */
 .selection-check {
   opacity: 0;
   transition: opacity 200ms ease-in-out;

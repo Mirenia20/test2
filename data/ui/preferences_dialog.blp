@@ -5,6 +5,8 @@ using Adw 1;
 template $RaccoonPreferencesDialog : Adw.PreferencesDialog  {
 
 
+
+
   Adw.ToolbarView {
     [top]
     Adw.HeaderBar {
@@ -17,6 +19,8 @@ template $RaccoonPreferencesDialog : Adw.PreferencesDialog  {
 
     ScrolledWindow scrolled_window {
        propagate-natural-height: true;
+        
+        min-content-height: 300;
         max-content-height: 500;
         margin-start : 10;
         margin-end:10; 
