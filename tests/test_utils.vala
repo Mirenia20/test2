@@ -1,5 +1,5 @@
-using Raccoon;
-
+//using Raccoon;
+/*
 int main(string[] args) {
     Test.init(ref args);
 
@@ -18,4 +18,4 @@ int main(string[] args) {
 
     return Test.run();
 }
-
+*/

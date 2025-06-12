@@ -30,7 +30,13 @@ public class MainPage : Adw.NavigationPage {
     private  unowned  Gtk.Box hint_box;
 
     [GtkChild]
-    private  unowned  Gtk.Label last_cleanup;
+    private  unowned  Gtk.Label last_cleanup_date;
+
+
+    [GtkChild]
+    private  unowned  Gtk.Label last_cleanup_title;
+
+
 
     private GLib.Settings settings_pref;
 
@@ -75,8 +81,12 @@ public class MainPage : Adw.NavigationPage {
 
 
         var date = settings_pref.get_string("last-cleanup");
-        last_cleanup.set_label("Last cleanup:\n"+date); 
-
+        if (date.length != 0){
+            last_cleanup_title.set_visible(true); 
+            last_cleanup_date.set_label(date); 
+        }else{
+            last_cleanup_title.set_visible(true); 
+        }
 
 
     }

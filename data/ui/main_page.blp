@@ -92,15 +92,27 @@ label: _("Analysis");
         }//analysis_button
 }//subtitle
 }
-Label last_cleanup{
-  styles [
-    "dim-label"
-  ] 
+Gtk.Box {
+ 
+   orientation: vertical;
 
-  margin-bottom:20;
+   Label last_cleanup_title{
+      label: _("Last cleanup");
+      styles [
+        "dim-label"
+      ] 
+      visible:false;
 
+  }
+  Label last_cleanup_date{
+    styles [
+      "dim-label"
+    ] 
+
+    margin-bottom:20;
+
+  }
 }
-
 
 
 

@@ -10,11 +10,11 @@ template $RaccoonAnalysisPage: Adw.NavigationPage {
     Adw.HeaderBar  bottom_headbar{
       show-back-button: false;
       show-end-title-buttons: false;
-      title-widget: Adw.WindowTitle  total_size{
-      };
+      title-widget: Adw.WindowTitle  total_size{};
 
       [start]
       Box {
+
         Button prev_button {
           icon-name: "go-previous-symbolic";
           sensitive: false;
@@ -27,17 +27,32 @@ template $RaccoonAnalysisPage: Adw.NavigationPage {
       }
      
      [end]
-      Button clean_button {
-        Adw.ButtonContent {
-          label: _("Clean");
-          icon-name: "empty-trash-bin-symbolic";
+ //     Box {
+        Button clean_button {
+          Adw.ButtonContent {
+            label: _("Clean");
+            icon-name: "empty-trash-bin-symbolic";
+          }
+
+          styles [
+            "destructive-action",
+            "c",
+          ]
         }
 
-        styles [
-          "destructive-action",
-          "c",
-        ]
-      }
+  /*      Button exclude_button {
+          Adw.ButtonContent {
+            label: _("Exclude");
+            icon-name: "extract";
+          }
+
+          styles [
+            "suggested-action",
+          ]
+        visible: false;
+        }
+      }*/
+      
     }
 
     [top]
@@ -49,28 +64,28 @@ template $RaccoonAnalysisPage: Adw.NavigationPage {
         title: "~";
       };
      
-     [start]
+     [end]
      Button select_all_button{
           label: _("Select All");
            visible: false; 
       }
 
 
-
+/*
       [end]
       Button selection_button {
         icon-name: "selection-mode-symbolic";
         tooltip-text: _("Select items");
       }
+*/
 
-
-
+/*
       [end]
       Button cancel_button{
           label: _("Cancel");
           tooltip-text: _("Select items");
           visible: false; 
-      }
+      }*/
 
      [end]
       Button search_button{

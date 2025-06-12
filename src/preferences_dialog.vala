@@ -16,23 +16,14 @@ public class PreferencesDialog : Adw.PreferencesDialog {
         this.present(parent);
 
     }
-        //get row check after remove forcus in run time typing
-        //  set to gsettign
-        // when buuton anaylises get from gsetting paths
-        //beffore anayluse check if directorey exist if not send toast
-//after cleaning add to gsetting history of cleanin
-//when open history via model of listbox add from gsetting
 
     construct{
 
 
     var display = Gdk.Display.get_default ();
-var theme =  Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
+    var theme =  Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
     string[] icons = theme.get_icon_names ();
 
- //   foreach (var icon_name in icons) {
-//        print ("%s\n", icon_name);
-  //  }
 
         settings_pref = new GLib.Settings("Raccoon.jh.xz");
 
@@ -41,7 +32,7 @@ var theme =  Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
                 var row = new Raccoon.PathRow (file.get_uri());
                 row.removed.connect((r) => {
                     enty_dirs_box.remove(r);
-                    remove_uri(uri);
+                    Utils.remove_uri(uri);
                 });
 
 
@@ -108,10 +99,10 @@ var theme =  Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
 
         var path_row = new Raccoon.PathRow(uri);
         enty_dirs_box.append(path_row);
-        add_uri(uri);
+        Utils.add_uri(uri);
         path_row.removed.connect((r) => {
             enty_dirs_box.remove(r);
-            remove_uri(uri);
+            Utils.remove_uri(uri);
         });
     
 }
@@ -121,29 +112,7 @@ private bool is_uri_added(string uri) {
     return uri in uris;
 }
 
-  void add_uri (string uri) {
-        settings_pref = new Settings ("Raccoon.jh.xz");
-        var uris = settings_pref.get_strv ("uris");
-        if (! (uri in uris)) {
-            print(uri);
-            uris += uri;
-            settings_pref.set_strv ("uris", uris);
-        }
-  }
-
-
-
-        void remove_uri (string uri) {
-            string[] uris = {};
-            foreach (var uri_iter in settings_pref.get_strv ("uris")) {
-                if (uri_iter != uri) {
-                    uris += uri_iter;
-                }
-            }
-            settings_pref.set_strv ("uris", uris);
-        }
-
-
+  
     //string get_actual_paths():
         //
         //  if (file.has_uri_scheme ("file")) {
@@ -151,7 +120,7 @@ private bool is_uri_added(string uri) {
             } else {
                 title = file.get_uri ();
             }*/
-           // remove_uri (uri);
+           // Utils.remove_uri (uri);
 
     private void set_path_to_gsettings(){}
     private Gee.ArrayList<string> get_actual_paths(){

@@ -12,7 +12,7 @@ racoon_sources = [
     'directory_history.vala'
     ]
 
-racoon_deps = [
+raccoon_deps = [
   dependency('gtk4'),
   dependency('polkit-gobject-1'),
   dependency('gee-0.8'),
@@ -21,6 +21,7 @@ racoon_deps = [
   dependency('glib-2.0')
 ]
 
+'''
 lib_raccoon = static_library('raccoon',
   racoon_sources,
   dependencies: racoon_deps,
@@ -37,11 +38,11 @@ raccoon_dep = declare_dependency(
 )
 
 meson.override_dependency('raccoon', raccoon_dep)
-
+'''
 
 
 executable('racoon', racoon_sources,raccoon_resources_ui,
-  dependencies: racoon_deps,
+  dependencies: raccoon_deps,
   vala_args: [
     '--gresources', resource_files,
     #'--gresourcesdir=data/',

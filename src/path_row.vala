@@ -2,27 +2,26 @@
 namespace Raccoon{
 [GtkTemplate (ui = "/Raccoon/jh/xz/data/ui/path_row.ui")]
 public class PathRow : Gtk.Box {
-   [GtkChild]
-   private  unowned  Gtk.Button  clear_button;
-   [GtkChild]
-   private unowned Gtk.Entry path_entry;
-   [GtkChild]
-   private unowned Gtk.Image icon_status;
-//where is initilization of this func
-   public signal void removed (Raccoon.PathRow row);
+    [GtkChild]
+    private  unowned  Gtk.Button  clear_button;
+    [GtkChild]
+    private unowned Gtk.Entry path_entry;
+    [GtkChild]
+    private unowned Gtk.Image icon_status;
+// where is initilization of this func
+    public signal void removed (Raccoon.PathRow row);
 
-    private unowned string path;
+    public string path { get; construct; }
     //change to get GLib.File than just string
     public PathRow (string path) {
-        //Object (path: path);
+        Object (path: path);
         //
-        this.path = path;
+       //    this.path = path;
          icon_status.add_css_class ("status");
      //   print(path);
         path_entry.set_text(path);
     }
 
-        //check duplicate
     construct{
 
 
@@ -69,12 +68,5 @@ public class PathRow : Gtk.Box {
         //print("\n");
 
     }
-
-    public string get_path(){return path;}
-    
-    public void set_path(string path){
-        path_entry.set_text(path);
-    }
-
 }
 }

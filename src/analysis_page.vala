@@ -20,14 +20,18 @@
 namespace Raccoon{
     [GtkTemplate (ui = "/Raccoon/jh/xz/data/ui/analysis_page.ui")]
     public class  AnalysisPage: Adw.NavigationPage {
-        private bool selection_mode = false;
+        private uint selection_number = 0;
 
+        private bool was_long_pressed = false;
 
         [GtkChild]
         private unowned Gtk.SearchBar searchbar;
         [GtkChild]
         private unowned Gtk.SearchEntry searchentry;
 
+
+
+        private GLib.ListStore model;
         private Gtk.FilterListModel? filtered_model = null;
         private Gtk.StringFilter? name_filter = null;
 
@@ -40,19 +44,19 @@ namespace Raccoon{
         [GtkChild]
         private unowned  Adw.WindowTitle total_size;
 
-
-
         [GtkChild]
         private unowned  Gtk.Button prev_button;
         [GtkChild]
         private unowned  Gtk.Button next_button;
 
 
-
-        [GtkChild]
-        private unowned  Gtk.Button cancel_button;
+        //        [GtkChild]
+        //       private unowned  Gtk.Button cancel_button;
         [GtkChild]
         private unowned  Gtk.Button select_all_button;
+        //  [GtkChild]
+        //   private unowned  Gtk.Button exclude_button;
+
 
 
 
@@ -66,12 +70,15 @@ namespace Raccoon{
         [GtkChild]
         private unowned  Gtk.Button search_button;
 
-        [GtkChild]
-        private unowned  Gtk.Button selection_button;
+        // [GtkChild]
+        //  private unowned  Gtk.Button selection_button;
 
         [GtkChild]
         private unowned Gtk.SignalListItemFactory item_factory;
+
         private Raccoon.DirectoryHistory history;
+
+        private Gee.ArrayList<GLib.File> list_of_excludes = new Gee.ArrayList<GLib.File>();
 
         private Adw.NavigationView viewer;
 
@@ -83,21 +90,22 @@ namespace Raccoon{
         construct {
 
             this.history = new DirectoryHistory();
-          
-            var model = new GLib.ListStore(typeof(GLib.File));
-            var multi = new Gtk.MultiSelection(model);
+
+            model = new GLib.ListStore(typeof(GLib.File));
+            var multi = new Gtk.SingleSelection(model);
             list_view.model = multi;
             list_view.factory = item_factory;
 
             var settings_pref = new Settings("Raccoon.jh.xz");
 
             var virtual_root = GLib.File.new_for_uri("virtual://root");
-           
+
 
             bool h =  history.has_prev();
             history.add_file(virtual_root);
 
             refresh_virtual_root(model, settings_pref);
+
 
 
             int last_count = -1;
@@ -106,13 +114,13 @@ namespace Raccoon{
                 if (history.get_current().get_uri().has_prefix("virtual://"))
                     return GLib.Source.CONTINUE;
 
-              if (!history.get_current().query_exists()) {
+                if (!history.get_current().query_exists()) {
                     last_count = -1; 
                     return GLib.Source.CONTINUE;
                 }
 
                 try {
-                    
+
                     var children = history.get_current().enumerate_children("standard::*", 0, null);
                     int count = 0;
 
@@ -174,7 +182,7 @@ namespace Raccoon{
 
 
 
-//fdvfdzxh  current not virtual 
+            //fdvfdzxh  current not virtual 
             search_button.clicked.connect(() => {
                 searchbar.search_mode_enabled = !searchbar.search_mode_enabled;
 
@@ -184,7 +192,7 @@ namespace Raccoon{
                 } else {
                     bottom_headbar.set_visible(true);
                     searchentry.set_text("");
-                    
+
                     refresh_virtual_root(model, settings_pref);
                     list_view.set_factory(null);
                     list_view.set_factory(item_factory);
@@ -194,44 +202,58 @@ namespace Raccoon{
 
 
 
-            top_headbar.pack_end(cancel_button);
-            top_headbar.pack_start(select_all_button);
+            /*exclude_button.clicked.connect(()=>{
+              ;
 
-            cancel_button.clicked.connect(() => {
-                selection_mode = false;
-                cancel_button.set_visible(false);
-                select_all_button.set_visible(false);
-                top_headbar.set_show_back_button(true);
-                selection_button.set_visible(true);
-                list_view.set_factory(null);
-                list_view.set_factory(item_factory);
+
+              });*/
+
+            //  top_headbar.pack_end(cancel_button);
+            // top_headbar.pack_start(select_all_button);
+
+            /*cancel_button.clicked.connect(() => {
+              list_of_excludes.foreach((file) => {
+              debug("Excluded file: %s\n", file.get_uri());
+              });
+
+            // exclude_button.set_visible(false);
+            clean_button.set_sensitive(true);
+            selection_mode = false;
+            cancel_button.set_visible(false);
+            select_all_button.set_visible(false);
+            top_headbar.set_show_back_button(true);
+            selection_button.set_visible(true);
+            list_view.set_factory(null);
+            list_view.set_factory(item_factory);
             });
 
             selection_button.clicked.connect(() => {
-                selection_mode = true;
-                cancel_button.set_visible(true);
-                select_all_button.set_visible(true);
-                top_headbar.set_show_back_button(false);
-                selection_button.set_visible(false);
-                list_view.set_factory(null);
-                list_view.set_factory(item_factory);
-            });
+            selection_mode = true;
+            //exclude_button.set_visible(true);
+            clean_button.set_sensitive(false);
+            cancel_button.set_visible(true);
+            select_all_button.set_visible(true);
+            top_headbar.set_show_back_button(false);
+            selection_button.set_visible(false);
+            list_view.set_factory(null);
+            list_view.set_factory(item_factory);
+            });*/
 
             clean_button.clicked.connect(() => {
                 int64 total_cleaned = 0;
                 foreach (var uri in settings_pref.get_strv("uris")) {
                     var file = GLib.File.new_for_uri(uri);
                     if (file.query_exists()) {
-                        total_cleaned += Utils.get_recursive_size(file);
-                        Utils.delete_files_recursive(uri);
+                        total_cleaned += Utils.recursive_size_file(file, list_of_excludes);
+                        Utils.delete_files_recursive(uri, list_of_excludes);
+                        Utils.remove_uri(uri); 
                     }
                 }
-
-                selection_mode = false;
-                cancel_button.set_visible(false);
+                //selection_mode = false;
+                //cancel_button.set_visible(false);
                 select_all_button.set_visible(false);
                 top_headbar.set_show_back_button(true);
-                selection_button.set_visible(true);
+                /// selection_button.set_visible(true);
 
                 refresh_virtual_root(model, settings_pref);
 
@@ -286,28 +308,32 @@ namespace Raccoon{
                 } 
             });
 
-            multi.selection_changed.connect(() => {
-                var selection = multi.get_selection();
-                for (uint i = 0; i < model.get_n_items(); i++) {
-                    if (selection.contains(i)) {
-                        var file = model.get_item(i) as GLib.File;
-                        if (file == null) continue;
 
-                        var info = file.query_info("standard::type", FileQueryInfoFlags.NONE);
-                        if (info.get_file_type() == FileType.DIRECTORY) {
-                            history.add_file(file);
-                            create_files_lists(model, file);
-                            update_navigation_buttons();
-                            ((Adw.WindowTitle) top_headbar.title_widget).title = file.get_path();
-                         
-                        }
-                    }
-                }
+            /*
+               multi.selection_changed.connect(() => {
+               if (selection_mode) return;
+            //change i use single seleciotn 
+            var selection = multi.get_selection();
+            for (uint i = 0; i < model.get_n_items(); i++) {
+            if (selection.contains(i)) {
+            var file = model.get_item(i) as GLib.File;
+            if (file == null) continue;
 
-                update_total_size_from_settings(settings_pref.get_strv("uris"));
-            });
+            var info = file.query_info("standard::type", FileQueryInfoFlags.NONE);
+            if (info.get_file_type() == FileType.DIRECTORY) {
+            history.add_file(file);
+            create_files_lists(model, file);
+            update_navigation_buttons();
+            ((Adw.WindowTitle) top_headbar.title_widget).title = file.get_path();
+
+            }
+            }
+            }
 
             update_total_size_from_settings(settings_pref.get_strv("uris"));
+            });
+            */
+            update_total_size_from_settings();
 
             item_factory.setup.connect(on_list_view_setup);
             item_factory.bind.connect(on_list_view_bind);
@@ -331,27 +357,32 @@ namespace Raccoon{
             list_view.set_factory(item_factory);
         }
 
-        private void search_and_append_recursive(GLib.ListStore model, GLib.File dir, string query) {
-            try {
-                var enumerator = dir.enumerate_children("standard::name,standard::type", FileQueryInfoFlags.NONE);
 
-                FileInfo? info;
-                while ((info = enumerator.next_file()) != null) {
-                    var name = info.get_name();
-                    var child = dir.get_child(name);
 
-                    if (name.down().contains(query)) {
-                        model.append(child);
+
+
+        private void 
+            search_and_append_recursive(GLib.ListStore model, GLib.File dir, string query) {
+                try {
+                    var enumerator = dir.enumerate_children("standard::name,standard::type", FileQueryInfoFlags.NONE);
+
+                    FileInfo? info;
+                    while ((info = enumerator.next_file()) != null) {
+                        var name = info.get_name();
+                        var child = dir.get_child(name);
+
+                        if (name.down().contains(query)) {
+                            model.append(child);
+                        }
+
+                        if (info.get_file_type() == FileType.DIRECTORY) {
+                            search_and_append_recursive(model, child, query);
+                        }
                     }
-
-                    if (info.get_file_type() == FileType.DIRECTORY) {
-                        search_and_append_recursive(model, child, query);
-                    }
+                } catch (Error e) {
+                    warning("Search error in %s: %s", dir.get_uri(), e.message);
                 }
-            } catch (Error e) {
-                warning("Search error in %s: %s", dir.get_uri(), e.message);
             }
-        }
 
         public void 
             handle_navigation(GLib.ListStore model, GLib.File file, string[] uris) {
@@ -374,48 +405,23 @@ namespace Raccoon{
                 }
             }
 
+        public void update_total_size_from_settings() {
+            var settings_pref = new Settings("Raccoon.jh.xz");
 
-        public void 
-            update_total_size_from_settings(string[] uris) {
-                int64 total_bytes = 0;
-                foreach (var uri in uris) {
-                    var file = GLib.File.new_for_uri(uri);
-                    if (file.query_exists()) {
-                        total_bytes += Utils.get_recursive_size(file);
-                    }
+            int64 total_bytes = 0;
+            string[] uris = settings_pref.get_strv("uris");
+
+            foreach (var uri in uris) {
+                var file = GLib.File.new_for_uri(uri);
+
+                if (file.query_exists()) {
+                    total_bytes += Utils.recursive_size_file(file, list_of_excludes);
                 }
-                total_size.set_title(Utils.format_file_size(total_bytes, form.FORM_XB));
-                total_size.set_subtitle("🗑 Will be deleted");
             }
 
-
-/*
-        public void 
-            update_effective_deletion_size_display(
-                Gtk.MultiSelection multi,
-                GLib.ListStore model) {
-                int64 total_bytes = 0;
-                int64 excluded_bytes = 0;
-
-                for (uint i = 0; i < model.get_n_items(); i++) {
-                    var file = model.get_item(i) as GLib.File;
-                    if (file == null) continue;
-
-                    int64 file_size = Utils.get_recursive_size(file);
-                    total_bytes += file_size;
-
-                    if (multi.get_selection().contains(i)) {
-                        excluded_bytes += file_size;
-                    }
-                }
-
-                int64 will_delete = total_bytes - excluded_bytes;
-
-                total_size.set_title(Utils.format_file_size(will_delete, form.FORM_XB));
-                total_size.set_subtitle("🗑 Will be deleted");
-            }
-
-*/
+            total_size.set_title(Utils.format_file_size(total_bytes, form.FORM_XB));
+            total_size.set_subtitle("🗑 Will be deleted");
+        }
 
         void show_summary_dialog(Gtk.Window parent, int64 bytes_cleaned) {
             var dialog = new Adw.MessageDialog(parent, "🧹 Cleaning Complete", null);
@@ -431,7 +437,6 @@ namespace Raccoon{
             dialog.present();
         }
 
-       
 
 
         private void update_navigation_buttons () {
@@ -450,12 +455,13 @@ namespace Raccoon{
                                                           null);
                 model.remove_all ();
                 FileInfo? file_info;
+                // here check for emtpy folder
                 while ((file_info = enumerator.next_file ()) != null) {
 
                     string name = file_info.get_name ();
                     GLib.File child = file.get_child (name);
                     model.append (child);
-                   // file_info = enumerator.next_file ();
+                    // file_info = enumerator.next_file ();
                 }
             } catch (Error e) {
                 stderr.printf ("Error: %s\n", e.message);
@@ -463,31 +469,130 @@ namespace Raccoon{
             list_view.set_factory(null);
             list_view.set_factory(item_factory);
         }
-      
 
 
 
-        private void 
-            on_list_view_setup (Gtk.SignalListItemFactory factory, GLib.Object list_item) {
-
-                var item = list_item as Gtk.ListItem;
-                var row = new Adw.ActionRow ();
-                var icon = new Gtk.Image ();
-                var label = new Gtk.Label ("");
-                var check = new Gtk.CheckButton();
-
-                icon.set_icon_size (Gtk.IconSize.LARGE);
-                row.add_prefix (icon);
-                row.add_suffix (label);
-                row.add_suffix(check);
 
 
-                //later exaplain
-                row.set_data ("icon", icon);
-                row.set_data ("label", label);
-                row.set_data("check", check);
-                item.set_child (row);
-            }
+
+
+
+
+        private void on_list_view_setup(Gtk.SignalListItemFactory factory, GLib.Object list_item) {
+            var item = list_item as Gtk.ListItem;
+
+            var row = new Adw.ActionRow();
+            var icon = new Gtk.Image();
+            var label = new Gtk.Label("");
+            var check = new Gtk.CheckButton();
+            check.set_valign(Gtk.Align.CENTER);
+
+            row.add_prefix(icon);
+            row.add_suffix(check);
+
+            // Зберігаємо віджети
+            row.set_data("icon", icon);
+            row.set_data("label", label);
+            row.set_data("check", check);
+
+
+
+            row.set_subtitle(""); 
+            row.set_data("label", label);
+            row.add_suffix(label);  
+            // TAP gesture
+            var tap = new Gtk.GestureClick();
+            tap.set_button(Gdk.BUTTON_PRIMARY);
+            tap.released.connect((gesture, n_press, x, y) => {
+                if (was_long_pressed) {
+                    was_long_pressed = false;
+                    return;
+                }
+
+                var r = gesture.get_widget() as Adw.ActionRow;
+                var file = r.get_data<GLib.File>("file");
+
+                try {
+                    var info = file.query_info("standard::type", FileQueryInfoFlags.NONE);
+                    if (info.get_file_type() == FileType.DIRECTORY) {
+                        history.add_file(file);
+                        create_files_lists(model, file);
+                        ((Adw.WindowTitle) top_headbar.title_widget).title = file.get_path();
+                        update_navigation_buttons();
+                    }
+                } catch (Error e) {
+                    warning("Navigation error: %s", e.message);
+                }
+            });
+            row.add_controller(tap);
+
+            // LONG PRESS gesture
+            var long_press = new Gtk.GestureLongPress();
+            long_press.pressed.connect((gesture, x, y) => {
+                was_long_pressed = true;
+
+                var r = gesture.get_widget() as Adw.ActionRow;
+                var file = r.get_data<GLib.File>("file");
+
+                bool found = false;
+                foreach (var f in list_of_excludes) {
+                    if (f.equal(file)) {
+                        list_of_excludes.remove(f);
+                        check.set_active(false);
+                        check.set_visible(false);
+                        selection_number--;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    list_of_excludes.add(file);
+                    check.set_visible(true);
+                    check.set_active(true);
+                    selection_number++;
+                }
+
+                update_total_size_from_settings();
+                select_all_button.set_visible(selection_number > 0);
+            });
+            row.add_controller(long_press);
+
+            // TOGGLED
+            check.toggled.connect(() => {
+                var file = row.get_data<GLib.File>("file");
+
+                if (check.get_active()) {
+                    bool exists = false;
+                    foreach (var f in list_of_excludes) {
+                        if (f.equal(file)) {
+                            exists = true;
+                            break;
+                        }
+                    }
+
+                    if (!exists) {
+                        list_of_excludes.add(file);
+                        selection_number++;
+                    }
+                } else {
+                    foreach (var f in list_of_excludes) {
+                        if (f.equal(file)) {
+                            list_of_excludes.remove(f);
+                            selection_number--;
+                            break;
+                        }
+                    }
+                }
+
+                update_total_size_from_settings();
+                select_all_button.set_visible(selection_number > 0);
+            });
+
+            item.set_child(row);
+        }
+
+
 
 
 
@@ -548,18 +653,27 @@ namespace Raccoon{
 
 
 
-
-        private void 
-        on_list_view_bind (
-            Gtk.SignalListItemFactory factory, GLib.Object list_item) {
-
+        private void on_list_view_bind(Gtk.SignalListItemFactory factory, GLib.Object list_item) {
             var item = list_item as Gtk.ListItem;
             var row = item.get_child() as Adw.ActionRow;
-            var file = item.get_item() as File;
+            var file = item.get_item() as GLib.File;
+
+            row.set_data("file", file);
 
             var icon = row.get_data<Gtk.Image>("icon");
             var label = row.get_data<Gtk.Label>("label");
             var check = row.get_data<Gtk.CheckButton>("check");
+
+            check.set_visible(false);
+            check.set_active(false);
+
+            foreach (var f in list_of_excludes) {
+                if (f.equal(file)) {
+                    check.set_visible(true);
+                    check.set_active(true);
+                    break;
+                }
+            }
 
             try {
                 var info = file.query_info(
@@ -576,24 +690,16 @@ namespace Raccoon{
 
                 if (info.get_file_type() == FileType.DIRECTORY) {
                     var n_items = Utils.number_of_folder_children(file);
-                    label.label = (n_items != 0 ? n_items.to_string() +
-                                   " items" : "Empty");
+                    label.label = (n_items != 0) ? @"$n_items items" : "Empty";
                 } else {
                     label.label = Utils.format_file_size(size, FORM_XB);
                 }
 
-                // Store file in row to access later
-
-
-                check.set_visible(selection_mode);
-                row.set_data("file", file);
             } catch (Error e) {
                 stderr.printf("Info error: %s\n", e.message);
+                row.title = "[Error]";
+                label.label = "";
             }
         }
-
-
-
     }
 }
-
